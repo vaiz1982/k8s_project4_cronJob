@@ -1,0 +1,34 @@
+# Ignore shell history and configs
+
+.bash_history
+.bash_logout
+.bashrc
+.profile
+
+# Ignore SSH keys and configs
+
+.ssh/
+
+# Ignore cache and temp files
+
+.cache/
+*.log
+*.tmp
+
+# Ignore system files
+
+.DS_Store
+Thumbs.db
+
+# Ignore everything by default (optional, use carefully)
+
+# *
+
+# Allow specific files (if using the above rule)
+
+# !k8s-setup.sh
+
+
+
+.lesshst
+.gitconfig
