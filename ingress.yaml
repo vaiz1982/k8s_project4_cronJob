@@ -1,0 +1,26 @@
+apiVersion:  networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: demo
+spec:
+  ingressClassName: nginx    ##u can choose envoi, hproxy , traefik
+  rules:
+    - host: demo.local              ## main domain where our website lives ! 
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:               ##where to ? will show u where to proxy it can be other onne not only  backend
+              service:            ## so proxy on service!   we can proxy on the pod if u like so 
+                  name: frontend-svc
+                  port:              ## service port not pod! 
+                    number: 80
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:          ## the same!  ## service is object not a list ( - name)
+                name: api-svc
+                port:
+                  number: 80                  ##so 2 services in one port ! its all good ! 
+
+

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:                  ##will shtamp pods! 
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend-1
+          image: anestesia01/k8s-demo:ingress-frontend
+          ports:
+            - containerPort: 8080
+
+---                 ### will do service next
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-svc
+spec:
+  selector:
+    app: frontend
+  ports:
+    - port: 80
+      targetPort: 8080

@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: orders-cleanup
+spec:
+  schedule: " */1 * * * *"    ##every minute!                     ## format of the cron itself ! 
+  concurrencyPolicy: Forbid                       ##  jobs getting slowly - we need policy forbit - one on one job the same time 
+  successfulJobsHistoryLimit: 3              ## we keep safe 3 last success! 
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: order-cron
+              image: anestesia01/k8s-demo:demo-jobs   ##the same 
+              args: ["cleanup"]
+              volumeMounts:            ##we not going to do PV , PVC like on the prod always do , here we just by pass for simplisity test here 1 
+                - name: data
+                  mountPath: /data
+          volumes:                        ## analogy bind mount in Docker compose ! 
+            - name: data
+              hostPath:
+                path: /home/ubuntu/pr/k8s_project4_cronJob/orders-demo
+                type: DirectoryOrCreate
+
+
+

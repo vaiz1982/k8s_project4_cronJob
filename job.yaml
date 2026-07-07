@@ -3,22 +3,23 @@ kind: Job
 metadata:
   name: migrate-job
 spec:
-  bachoffLimit: 3    ## if job failed off 3 time ttl max!  stop running 
+  backoffLimit: 3    ## if job failed off 3 time ttl max!  stop running 
   ttlSecondsAfterFinished: 300   ##5 min for time about beetween job space not failed of the same itme 1 
   template:
     spec:
       restartPolicy: Never
       containers:
         - name: order-app
-          image: anestesia01/k8s-demo/demo-jobs
+          image: anestesia01/k8s-demo:demo-jobs               ##in this image migration logic - how table will change its there ! 
           args: ["migrate"]                  ## app.py have argumet its going some job ...
           volumeMounts:            ##we not going to do PV , PVC like on the prod always do , here we just by pass for simplisity test here 1 
             - name: data
-              mountPath: data
+              mountPath: /data
       volumes:                        ## analogy bind mount in Docker compose ! 
         - name: data
-          mountPath: /home/ubuntu/project/k8s_defaultForTestingPurposeOnly
-          type: Directory
+          hostPath:
+            path: /home/ubuntu/pr/k8s_project4_cronJob/orders-demo
+            type: DirectoryOrCreate
 
 
 

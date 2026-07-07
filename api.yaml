@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api             ##change here 
+spec:
+  replicas: 3     ## change 3 here 
+  selector:
+    matchLabels:
+      app: api             ##change here  labels
+  template:                  ##will shtamp pods! 
+    metadata:
+      labels:
+        app: api     ##labels!  
+    spec:
+      containers:
+        - name: api-1               ##here 
+          image: anestesia01/k8s-demo:ingress-api        ## api at the end image q 
+          ports:
+            - containerPort: 8080
+
+---                 ### will do service next
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-svc              ## api at hte front 
+spec:
+  selector:
+    app: api               ##here
+  ports:
+    - port: 80
+      targetPort: 8080
